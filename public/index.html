@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<head>
+    <title>WebRTC Video Streaming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        video{
+            display:block;
+        }
+        button{
+            display:inline-block;
+            margin:8px;
+        }
+        .hide{
+            display:none !important;
+        }
+        #video-div{
+            display: inline-block !important;
+            margin-bottom: 16px;
+        }
+        
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+    
+    
+    <!--This is the div that contains the form for typing the room number-->
+    <div id="selectRoom" class="ml-2">
+        <h1 class="mb-4 ml-2">WebRTC Video Conference</h1>
+        <label>Type the room number</label>
+        <input id="roomNumber" type="text"/>
+        <button role="button" class="btn btn-primary pl-5 pr-5" id="goRoom">Go</button>
+
+        <h1 class="mb-4 ml-2 mt-5">WebRTC Video Streaming</h1>
+        <label>Type your streaming name</label>
+        <input id="streamingName" type="text"/>
+        <br><br>
+        <label>If you want to stream a video file. Select a file.</label><br>
+        <input type="file" accept="video/*" id="videoFile2Stream"><br>
+        <button role="button" class="btn btn-primary pl-5 pr-5 mt-3" id="goStreaming">Live streaming via Webcam</button><br>
+        <button role="button" class="btn btn-primary pl-5 pr-5 mt-3" id="goStreaming_local_video">Stream selected video</button>
+
+    </div>
+    
+    <!--This is the div that contains video streams-->
+
+    <div id="video-conference-wrapper" class=" hide">
+        <div class="row" style="padding:0px;margin:0px">
+
+            <div class="col-sm-12 col-md-12 col-lg-9 col-xl-9" id="video-col" style="height:100vh;overflow-y: auto">
+                <div id="consultingRoom" style="display:none">
+                    <div id="video-div" class="localVideoDiv">
+                        <video id="localVideo" class="mb-3" autoplay></video>
+                        <button role="button" class="btn btn-primary" id="start-recording-local-video">Start Recording</button>
+                        <button role="button" class="btn btn-danger hide" id="stop-recording-local-video">Stop Recording</button>
+                        <button role="button" class="btn btn-success hide" id="download-recording-local-video">Download Recording</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chat-col" class="col-sm-12 col-md-12 col-lg-3 col-xl-3">
+                <div id="chat-message-box" style="height:50vh;background:#eee;width:100%;overflow-y:auto">
+                    
+                </div>
+                <div id="chat-messeger-input-box">
+                    <form onsubmit="event.preventDefault();sendChatMessage()" style="width:100%" id="chat-message-form">
+                        <div class="d-flex align-items-center justify-content-between">
+                                <label>You Chat Name</label>
+                                <input required id="chat-name-input" class="ml-2" placeholder="Enter your chat name..."/>
+                        </div>
+                        
+                        <textarea required class="form-group d-block p-1" style="width:100%" rows="5" placeholder="Write your message here..." id="chat-message-input"></textarea>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                    
+                    <div class="file-upload-div mt-3 mb-5">
+                        <p>Share a file</p>
+                        <form id="file-upload-form">
+                            <input type="file" id="to-upload-file" multiple class="mb-3"/>
+                            <input type="submit" value="Upload" class="btn btn-success"/>
+                            <div class="spinner-border hide" id="file-upload-spinner" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <!--These are the required javascripts libraries-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="socket.io-file-client.js"></script> 
+
+    <script src="RecordRTC.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>

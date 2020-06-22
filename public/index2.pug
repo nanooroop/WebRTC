@@ -1,0 +1,69 @@
+doctype html
+head
+  title WebRTC Video Conference
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  style.
+    video{
+    display:block;
+    }
+    button{
+    display:inline-block;
+    margin:8px;
+    }
+    .hide{
+    display:none !important;
+    }
+    #video-div{
+    display: inline-block;
+    margin-bottom: 16px;
+    }
+    #video-div video{
+      width:100vw;
+      height:100vh;
+      margin-left:-16px;
+    }
+  link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
+// This is the div that contains the form for typing the room number
+#selectRoom.ml-2.hide
+  h1.mb-4.ml-2 WebRTC Video Conference
+  label Type the room number
+  input#roomNumber(type='text')
+  button#goRoom.btn.btn-primary.pl-5.pr-5(role='button') Go
+  h1.mb-4.ml-2.mt-5 WebRTC Video Streaming
+  label Type your streaming name
+  input#streamingName(type='text')
+  button#goStreaming.btn.btn-primary.pl-5.pr-5(role='button') Go
+// This is the div that contains video streams
+#video-conference-wrapper.hide
+  .row(style='padding:0px;margin:0px')
+    .col-sm-12.col-md-12.col-lg-12.col-xl-12(style='min-height:100vh;overflow-y: auto')
+      #consultingRoom(style='display:none')
+        #video-div.localVideoDiv
+          video#localVideo.mb-3(autoplay='')
+          button#start-recording-local-video.btn.btn-primary(role='button') Start Recording
+          button#stop-recording-local-video.btn.btn-danger.hide(role='button') Stop Recording
+          button#download-recording-local-video.btn.btn-success.hide(role='button') Download Recording
+    .col-sm-12.col-md-12.col-lg-12.col-xl-12(style="display:none")
+      #chat-message-box(style='height:50vh;background:#eee;width:100%;overflow-y:auto')
+      #chat-messeger-input-box
+        form#chat-message-form(onsubmit='event.preventDefault();sendChatMessage()' style='width:100%')
+          .d-flex.align-items-center.justify-content-between
+            label You Chat Name
+            input#chat-name-input.ml-2(required='' placeholder='Enter your chat name...')
+          textarea#chat-message-input.form-group.d-block.p-1(required='' style='width:100%' rows='5' placeholder='Write your message here...')
+          button.btn.btn-primary(type='submit') Send
+        .file-upload-div.mt-3.mb-5
+          p Share a file
+          form#file-upload-form
+            input#to-upload-file.mb-3(type='file' multiple='')
+            input.btn.btn-success(type='submit' value='Upload')
+            #file-upload-spinner.spinner-border.hide(role='status')
+              span.sr-only Loading...
+// These are the required javascripts libraries
+script(src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous')
+script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
+script(src='socket.io-file-client.js')
+script(src='RecordRTC.min.js')
+script(src='/socket.io/socket.io.js')
+script(src='client.js')
